@@ -1,0 +1,28 @@
+.line-counter {
+  padding: 2rem;
+  max-width: 800px;
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .code-snippet-textarea {
+    width: 100%;
+    font-family: monospace;
+    padding: 1rem;
+    border-radius: 4px;
+  }
+
+  .analysis-result-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .result-section {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+  }
+}
