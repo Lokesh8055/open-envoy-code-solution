@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLineClassifier } from "../useLineClassifier";
 import "./LineCounter.css";
+import AnalysisResult from "./partials/AnalysisResult";
 
 // ------------ Analyzer Function ------------
 const analyzeContent = (content, classifyFn) => {
@@ -22,45 +23,24 @@ const analyzeContent = (content, classifyFn) => {
   return counts;
 };
 
-const AnalysisResult = ({ heading, children, data, text }) => {
-  return (
-    <section>
-      <h3>{heading}</h3>
-      {children}
-      {data && (
-        <div
-          className="result-section"
-          style={{ backgroundColor: text === "File" ? "#f8f8f8" : "#eef6f6" }}
-        >
-          <p>
-            <strong>{text} Analysis Result:</strong>
-          </p>
-          <p>Blank: {data.blank}</p>
-          <p>Comments: {data.comment}</p>
-          <p>Code: {data.code}</p>
-          <p>Total lines: {data.total}</p>
-        </div>
-      )}
-    </section>
-  );
-};
-
 const LineCounter = () => {
   const { classify } = useLineClassifier();
   const [fileCounts, setFileCounts] = useState(null);
+  const [fileName, setFileName] = useState("");
   const [testInput, setTestInput] = useState("");
   const [testCounts, setTestCounts] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
 
-  // Auto-analyze test input when it changes
   useEffect(() => {
     const result = analyzeContent(testInput, classify);
     setTestCounts(result);
-  }, [testInput, classify]); // <-- classify identity is now stable
+  }, [testInput, classify]);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    setFileName(file.name);
     const reader = new FileReader();
     reader.onload = (event) => {
       const content = event.target.result;
@@ -70,23 +50,60 @@ const LineCounter = () => {
     reader.readAsText(file);
   };
 
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      setFileName(file.name);
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const content = event.target.result;
+        const result = analyzeContent(content, classify);
+        setFileCounts(result);
+      };
+      reader.readAsText(file);
+    }
+  };
+
   return (
     <div className="line-counter">
-      <h2>📊 Lines of code counter</h2>
-      {/* File Upload Section */}
+      <h2>📊 Lines of Code Counter</h2>
       <div className="analysis-result-container">
         <AnalysisResult
           heading="📁 Upload a Source File"
           data={fileCounts}
           text="File"
+          fileName={fileName}
         >
-          <input
-            type="file"
-            accept=".js,.jsx,.ts,.tsx,.java,.txt"
-            onChange={handleFileUpload}
-          />
+          <div
+            className={`file-upload-area ${isDragging ? 'dragging' : ''}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <input
+              type="file"
+              accept=".js,.jsx,.ts,.tsx,.java,.txt"
+              onChange={handleFileUpload}
+              id="file-upload"
+            />
+            <label htmlFor="file-upload" className="file-upload-label">
+              <span className="upload-icon">📁</span>
+              <span>Drag & drop a file here or click to browse</span>
+            </label>
+          </div>
         </AnalysisResult>
-        {/* Test Input Section */}
+
         <AnalysisResult
           heading="🧪 Try Your Own Code Snippet"
           data={testCounts}
@@ -95,7 +112,7 @@ const LineCounter = () => {
           <textarea
             rows={8}
             className="code-snippet-textarea"
-            placeholder="// Paste or write code here"
+            placeholder="// Paste or write code here to analyze..."
             value={testInput}
             onChange={(e) => setTestInput(e.target.value)}
           />

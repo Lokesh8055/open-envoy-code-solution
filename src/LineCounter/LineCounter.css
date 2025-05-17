@@ -1,28 +1,202 @@
 .line-counter {
   padding: 2rem;
-  max-width: 800px;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   h2 {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    color: #2d3748;
+    font-size: 2rem;
+    font-weight: 700;
   }
 
   .code-snippet-textarea {
     width: 100%;
-    font-family: monospace;
-    padding: 1rem;
-    border-radius: 4px;
+    font-family: 'Fira Code', monospace;
+    padding: 1.25rem;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    background-color: #f8fafc;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    transition: all 0.2s ease;
+    resize: vertical;
+    min-height: 200px;
+
+    &:focus {
+      outline: none;
+      border-color: #4299e1;
+      box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+    }
+
+    &::placeholder {
+      color: #a0aec0;
+    }
   }
 
   .analysis-result-container {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 2rem;
+    margin-top: 1rem;
+  }
+
+  .analysis-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   }
 
   .result-section {
+    margin-top: 1.25rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .result-header {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+
+    p {
+      margin: 0;
+      color: #4a5568;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      strong {
+        color: #2d3748;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .file-name {
+    margin-top: 0.5rem !important;
+    font-size: 0.875rem !important;
+    color: #718096 !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    .file-icon {
+      font-size: 1rem;
+    }
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
     margin-top: 1rem;
-    padding: 1rem;
+  }
+
+  .stat-item {
+    padding: 0.75rem;
+    background-color: white;
     border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    &.total {
+      grid-column: span 2;
+      background-color: #ebf8ff;
+      border: 1px solid #bee3f8;
+    }
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: #718096;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+  }
+
+  .file-upload-area {
+    border: 2px dashed #e2e8f0;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+    cursor: pointer;
+
+    &.dragging {
+      border-color: #4299e1;
+      background-color: #ebf8ff;
+    }
+  }
+
+  .file-upload-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    color: #4a5568;
+    font-size: 0.95rem;
+
+    .upload-icon {
+      font-size: 2rem;
+    }
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+
+  section {
+    h3 {
+      color: #2d3748;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    padding: 1rem;
+
+    .analysis-result-container {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .result-section {
+      padding: 1.25rem;
+    }
+
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .stat-item.total {
+      grid-column: span 1;
+    }
   }
 }
