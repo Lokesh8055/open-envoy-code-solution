@@ -127,8 +127,8 @@ npm run dev
 ## 📱 Screenshots
 
 <div align="center">
-  <img src="./screenshots/desktop.png" alt="Desktop View" width="800"/>
-  <img src="./screenshots/mobile.png" alt="Mobile View" width="400"/>
+  <img src="./screenshots/desktop.png" alt="Desktop" width="800"/>
+  <img src="./screenshots/mobile.png" alt="Mobile" width="400"/>
 </div>
 
 ## 🛠️ Technologies Used
